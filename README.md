@@ -22,10 +22,11 @@ public class ShoppingList {
 
 	@GET
 	@Produces("json")
-	@Path("doLogin")
+	@Path("getProducto")
+	@RolesAllowed({"admin","user"})
 	public RestResponse getProducto() {
 	
-	
+		return new RestResponse("response:ok", 200, "");
 	
 	}
 	
