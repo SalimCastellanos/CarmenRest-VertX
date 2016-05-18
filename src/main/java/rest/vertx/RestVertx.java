@@ -9,10 +9,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.auth.jwt.JWTAuth;
 import io.vertx.ext.web.Route;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.JWTAuthHandler;
 import rest.vertx.Annotations.Base;
 import rest.vertx.Annotations.NoParam;
 import rest.vertx.Annotations.RestIgnore;
@@ -22,16 +24,22 @@ import rest.vertx.models.RestResponse;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+
+import org.reflections.Reflections;
 
 public class RestVertx {
 	
@@ -711,4 +719,118 @@ public class RestVertx {
     private static void say(String arg) {
         System.out.println(arg);
     }
+    
+    
+    /*   codido agregado */
+
+	public static void initScan(Vertx _vertx, Router router, JWTAuth jwt, String PACKAGE) {
+		Reflections reflections = new Reflections(PACKAGE);
+
+		Class<? extends AvalibleService> servicio;
+
+		Object[] serviciosList = reflections.getSubTypesOf(AvalibleService.class).toArray();
+
+		/*
+		 * Reflections reflections2 = new
+		 * Reflections(ClasspathHelper.forPackage(SCAN_PACKAGE), Method.class,
+		 * Method.class);
+		 */
+
+		for (int cont = 0; cont < serviciosList.length; cont++) {
+
+			servicio = (Class<? extends AvalibleService>) serviciosList[cont];
+
+			agregarSeguridadMetodosServicio(servicio, router, jwt);
+			añadirServicio(servicio, _vertx, router);
+
+		}
+	}
+
+	public static void añadirServicio(Class<? extends AvalibleService> servicio, Vertx _vertx, Router router) {
+		try {
+			RestVertx.register(_vertx, router,servicio.newInstance());
+		} catch (InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//System.out.println("Se ejecuto la clase de servicio: " + context.getBean(servicio.getName()) + ".java");
+	}
+
+	public static void agregarSeguridadMetodosServicio(Class<? extends AvalibleService> servicio, Router router,
+			JWTAuth jwt) {
+		for (Annotation annotation : servicio.getAnnotations()) {
+			String base = annotation.annotationType().getName();
+			String baseString = annotation.toString();
+
+			System.out.println("CLASENAME: " + base);
+			System.out.println("CLASEtostring: " + baseString);
+			if (base.equals("rest.vertx.Annotations.Base")) {
+
+				String baseRoot = baseString.substring(baseString.indexOf("value=") + 6, baseString.lastIndexOf(")"));
+				System.out.println("BASEROOT: " + baseRoot);
+
+				for (java.lang.reflect.Method method : servicio.getMethods()) {
+					System.out.println("--------------------------");
+					String path = "";
+					String[] roles = null;
+					Set<String> roles2 = null;
+					for (Annotation annotationMethod : method.getAnnotations()) {
+
+						String nombreMetodo = method.getName();
+						String nameM = annotationMethod.annotationType().getName();
+						String tostringM = annotationMethod.toString();
+
+						if (nameM.equals("javax.annotation.security.RolesAllowed")) {
+
+							String auxRoles = annotationMethod.toString();
+							auxRoles = auxRoles.substring(auxRoles.indexOf("value=[") + 7, auxRoles.lastIndexOf("]"));
+
+							roles = auxRoles.replaceAll(" ", "").split(",");
+
+							roles2 = new HashSet<String>(Arrays.asList(roles));
+
+							System.out.println("entro roles1: " + annotationMethod.toString());
+							System.out.println("entro roles2: " + annotationMethod.annotationType().toString());
+
+						}
+
+						System.out.println("nombreMetodo: " + nombreMetodo);
+						System.out.println("ClaseAnotación: " + nameM);
+						System.out.println("toStringValor: " + tostringM);
+
+						if (nameM.equals("rest.vertx.Annotations.Path")) {
+							path = tostringM.substring(tostringM.indexOf("value=") + 6, tostringM.lastIndexOf(")"));
+						}
+
+					}
+
+					for (Parameter parameter : method.getParameters()) {
+						String nombreMetodo = method.getName();
+
+						String nameM = parameter.getName();
+						String tostringM = parameter.toString();
+
+						System.out.println("nombreMetodoParametro: " + nombreMetodo);
+						System.out.println("nombreParametro: " + nameM);
+						System.out.println("toStringParametro: " + tostringM);
+
+					}
+
+					if (!path.equals("")) {
+						String rutaAuth = "/" + baseRoot + "/" + path;
+						System.out.println("Se agregara autenticación en: " + rutaAuth);
+						// router.route(rutaAuth).handler(autorizoHandler);
+						if (roles != null) {
+							//router.route(rutaAuth).handler(RedirectAuthHandler.create((AuthProvider) JWTAuthHandler.create(jwt).addAuthorities(roles2), "/loginpage.html"));
+							router.route(rutaAuth).handler(JWTAuthHandler.create(jwt).addAuthorities(roles2));
+						}
+					}
+
+					System.out.println("--------------------------");
+
+				}
+			}
+
+		}
+	}
 }
