@@ -42,6 +42,7 @@ Simply specify the model as the parameter in both the endpoint and handling meth
 
 Example handling method using URL encoded Json in the path param for Json object:
 
+```java
 @Base("product")
 public class ShoppingList {
 
