@@ -21,7 +21,7 @@ Example constructor of handling class:
 
 ```java
 @Base("product")
-public class ShoppingList {
+public class ShoppingList extends AvalibleService {
 
 	@GET
 	@Produces("json")
@@ -47,7 +47,7 @@ Example handling method using URL encoded Json in the path param for Json object
 
 ```java
 @Base("product")
-public class ShoppingList {
+public class ShoppingList extends AvalibleService{
 
 	@POST
 	@Produces("json")
