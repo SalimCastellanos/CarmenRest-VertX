@@ -80,6 +80,8 @@ public class ShoppingList {
 			
 			}
 		
+		*/
+		
 		manager.saveProduct(poductDTO);
 		return new RestResponse(Json.encode(new ProductDTO()), 200, "");
 	
