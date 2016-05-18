@@ -1,4 +1,7 @@
 # CarmenRestVertx
+
+NOT YET COMPLETE CLIMBING
+
 CarmenRest-Vertx is a mini-framework that makes it easier to build HTTP services with Vert.x and and Security with JWT Protocol, using the JAX-RS 2.0 standard
 
 **** <b>Latest Version released 18/05/2016</b> ****
@@ -103,7 +106,7 @@ Example handling method using Json in the request body (automatically detected a
 	}
 ```
 
-Example data model that RestVertx deserializes into w/Jackson annotations (handling method argument):
+Example data model that CarmenRest-Vertx deserializes into w/Jackson annotations (handling method argument):
 
 ```java
 @JsonIgnoreProperties(ignoreUnknown = true)
