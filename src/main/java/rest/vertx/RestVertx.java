@@ -780,7 +780,7 @@ public class RestVertx {
 						String nameM = annotationMethod.annotationType().getName();
 						String tostringM = annotationMethod.toString();
 
-						if (nameM.equals("javax.annotation.security.RolesAllowed")) {
+						if (nameM.equals("rest.vertx.Annotations.RolesAllowed")) {
 
 							String auxRoles = annotationMethod.toString();
 							auxRoles = auxRoles.substring(auxRoles.indexOf("value=[") + 7, auxRoles.lastIndexOf("]"));

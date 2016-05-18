@@ -1,6 +1,7 @@
 package examples.simpleRestService;
 
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
@@ -11,12 +12,15 @@ import io.vertx.ext.web.handler.StaticHandler;
 import rest.vertx.RestVertx;
 
 
-public class Server extends AbstractVerticle {
+public class ExampleServer extends AbstractVerticle {
 
 	static Router router = null;
 
-	public Server() {
+	public static void main(String[] args) {
 
+		final Vertx vertx = Vertx.vertx();
+		vertx.deployVerticle(new ExampleServer());
+		
 	}
 
 	@Override
@@ -36,6 +40,7 @@ public class Server extends AbstractVerticle {
 			        setPassword("password")
 			);
 		
+		/* EN CASO DE USAR SSL */
 		/* Se crea una instancia del servidor web con el certificaso SSL para desplegar HTTPS */
 		// HttpServer server = vertx.createHttpServer(options);
 		
@@ -45,15 +50,17 @@ public class Server extends AbstractVerticle {
 		/* Se crea instancia de Router para el manejo de peticiones */
 		router = Router.router(vertx);
 		
-		ScanRestClass.initScan(vertx, router, context, jwt);
+		String PACKAGE = "examples.simpleRestService.restServices";
+		RestVertx.initScan(vertx, router, jwt, PACKAGE);
 		
 		/* Se inicializa el servicio de autenticación */
-		ServerAuth serverAuth = new ServerAuth(jwt);
-		RestVertx.register(vertx, router, serverAuth);
+		/* ServerAuth serverAuth = new ServerAuth(jwt); */
+		/*RestVertx.register(vertx, router, serverAuth);*/
 		
-		 router.route().handler(StaticHandler.create("D:/VertX/Fuentes/RestMicroServiciosVertx/src/main/java/co/com/quipux/viaticos/webapp/webroot"));
+		/* En caso de querer publicar una carpeta estatica */
+		//router.route().handler(StaticHandler.create("D:/VertX/Fuentes/RestMicroServiciosVertx/src/main/java/co/com/quipux/viaticos/webapp/webroot"));
 
-		server.requestHandler(router::accept).listen(3030);
+		server.requestHandler(router::accept).listen(8081);
 
 	}
 
