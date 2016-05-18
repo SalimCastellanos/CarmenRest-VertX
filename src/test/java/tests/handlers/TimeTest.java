@@ -1,6 +1,6 @@
 package tests.handlers;
 
-import rest.vertx.RestVertx;
+import rest.vertx.CarmenRestVertx;
 import rest.vertx.Annotations.Base;
 import rest.vertx.Annotations.Method;
 import rest.vertx.Annotations.Path;
@@ -22,7 +22,7 @@ public class TimeTest {
 	
 	public TimeTest(Vertx _vertx, Router router)
 	{
-		RestVertx.register(_vertx, router, this);
+		CarmenRestVertx.register(_vertx, router, this);
 	}
 	
 	@Method("Post")

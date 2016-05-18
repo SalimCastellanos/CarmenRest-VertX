@@ -41,7 +41,7 @@ import java.util.Set;
 
 import org.reflections.Reflections;
 
-public class RestVertx {
+public class CarmenRestVertx {
 	
 	private static final String GET = "get";
 	private static final String POST = "post";
@@ -748,7 +748,7 @@ public class RestVertx {
 
 	public static void añadirServicio(Class<? extends AvalibleService> servicio, Vertx _vertx, Router router) {
 		try {
-			RestVertx.register(_vertx, router,servicio.newInstance());
+			CarmenRestVertx.register(_vertx, router,servicio.newInstance());
 		} catch (InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

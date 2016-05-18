@@ -1,6 +1,8 @@
 # CarmenRestVertx
 
-NOT YET COMPLETE CLIMBING
+CarmenRestVertx is written in Java and based on RestVertx 0.0.6
+
+view example in src/examples/
 
 CarmenRest-Vertx is a mini-framework that makes it easier to build HTTP services with Vert.x and and Security with JWT Protocol, using the JAX-RS 2.0 standard
 
@@ -15,7 +17,7 @@ CarmenRest-Vertx is a mini-framework that makes it easier to build HTTP services
 ### Main Features
 
 ##### Feature #1: Easily create http endpoint handler methods in Java classes to be served by Vertx
-Simply call CarmenRestVertx.scan(strPackage) and annotate your methods.  Instantiate the handling class(es) in your verticle and you're ready to go!
+Simply call CarmenRestVertx.initScan(vertx, router, jwt, PACKAGE); and annotate your methods.  Instantiate the handling class(es) in your verticle and you're ready to go!
 
 Example constructor of handling class:
 
@@ -179,7 +181,7 @@ Example: <span style="color:red"> enable CORS at a higher level:</span>
 		router = Router.router(vertx);
 		
 		String PACKAGE = "examples.simpleRestService.restServices";
-		RestVertx.initScan(vertx, router, jwt, PACKAGE);
+		CarmenRestVertx.initScan(vertx, router, jwt, PACKAGE);
 
 		server.requestHandler(router::accept).listen(8081);
 
@@ -264,7 +266,7 @@ public void start() throws Exception {
 		String PACKAGE = "examples.simpleRestService.restServices";
 		
 		/* scan the package search service class */
-		RestVertx.initScan(vertx, router, jwt, PACKAGE);
+		CarmenRestVertx.initScan(vertx, router, jwt, PACKAGE);
 		
 }
 ```
@@ -328,19 +330,11 @@ example: @Blocking(value = "true", serial = "false")
 - First string argument is for blocking, second string argument is for serial
 - Defaults to non-blocking
 
-<a name=Benchmarks />
-## Benchmarks
-The times taken to make 50,000 synchronous, consecutive POST request where the handling method deserialized JSON argument to variable and serialized variable back to JSON argument before returning/ending
 
-Times should only be compared relative to one another to give a very rough estimate of time differences between using RestVertx on top of Vert.x vs Vert.x alone.  There is always a cost for adding a layer on top of something else
-
-While one test ran, the other @test annotation AND the other route were commented out in TimeTest.java (included under testing source code)
-
-V 1.0
-
-CarmenRestVertx + Vert.x
+---------------------------------------------------------------------
+CarmenRestVertx V 1.0
 
 
 Please submit any issues you find
 
-RestVertx is written in Java
+CarmenRestVertx is written in Java and based on RestVertx 0.0.6

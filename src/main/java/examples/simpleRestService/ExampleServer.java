@@ -9,7 +9,7 @@ import io.vertx.core.net.JksOptions;
 import io.vertx.ext.auth.jwt.JWTAuth;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.StaticHandler;
-import rest.vertx.RestVertx;
+import rest.vertx.CarmenRestVertx;
 
 
 public class ExampleServer extends AbstractVerticle {
@@ -51,7 +51,7 @@ public class ExampleServer extends AbstractVerticle {
 		router = Router.router(vertx);
 		
 		String PACKAGE = "examples.simpleRestService.restServices";
-		RestVertx.initScan(vertx, router, jwt, PACKAGE);
+		CarmenRestVertx.initScan(vertx, router, jwt, PACKAGE);
 		
 		/* Se inicializa el servicio de autenticación */
 		/* ServerAuth serverAuth = new ServerAuth(jwt); */
