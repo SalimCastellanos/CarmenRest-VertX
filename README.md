@@ -163,18 +163,27 @@ Example: <span style="color:red"> enable CORS at a higher level:</span>
 
 	@Override
 	public void start() throws Exception {
+	
+		/* Certificado para servidor de seguridad, proocolo JWT */
+		JWTAuth jwt = JWTAuth.create(vertx, new JsonObject()
+		        .put("keyStore", new JsonObject()
+		            .put("type", "jceks")
+		            .put("path", "D:/VertX/Fuentes/RestMicroServiciosVertx/src/main/java/co/com/quipux/viaticos/webapp/examples/keystore.jceks")
+		           .put("password", "secret")));
+	
 
 		HttpServer server = vertx.createHttpServer();
 
 		server = vertx.createHttpServer();
 
 		router = Router.router(vertx);
+		
+		String PACKAGE = "examples.simpleRestService.restServices";
+		RestVertx.initScan(vertx, router, jwt, PACKAGE);
 
-		// Enable CORS
-		// This is useful for developing on a node-dependent IDE where node serves the app, but your service endpoints exist in Vertx
-	  CORS.allow(router, "http://localhost:3000");
-		...
-	}
+		server.requestHandler(router::accept).listen(8081);
+
+		}
 ```
 
 <a name=Getting-Started />
@@ -215,20 +224,11 @@ Add this in your dependencies:
 
 ## How to use RestVertx
 
-1.Use static method CarmenRestVertx.scan(strPackage) in the handling class (no need to extend CarmenRestVertx)
-
-``` java
-public ShoppingListFinder(Vertx _vertx, Router router)
-{
-	CarmenRestVertx.scan(_vertx, router, this);
-}
-```
-
-2.Add your annotations to your handling class(es) - you must return a RestResponse object in your handling method
+1.Add your annotations to your handling class(es) - you must return a RestResponse object in your handling method
 
 ```java
 // Vertx handling method in Java
-	@Method("Post")
+	@POST
 	@ResultType("json")
 	@Path("shoppingLists/:request")
 	public RestResponse getShoppingListPost(ShoppingListRequest request)
@@ -243,31 +243,33 @@ public ShoppingListFinder(Vertx _vertx, Router router)
 	}
 ```
 
-3.Instantiate new instance of handling class in your app (don't forget to include the body handler!)
+2.Instantiate new instance of handling class in your app (don't forget to include the body handler!)
 
 ``` java
 @Override
 public void start() throws Exception {
 
-		  HttpServer server = vertx.createHttpServer();
+		  /* for your secure request, JWT protocol
+  JWTAuth jwt = JWTAuth.create(vertx, new JsonObject()
+		        .put("keyStore", new JsonObject()
+		            .put("type", "jceks")
+		            .put("path", "D:/VertX/Fuentes/RestMicroServiciosVertx/src/main/java/co/com/quipux/viaticos/webapp/examples/keystore.jceks")
+		           .put("password", "secret")));
 
-		  server = vertx.createHttpServer();
-
-		  router = Router.router(vertx);
-
-			// So we can use getBodyAsJson() and/or getBodyAsString() in our handling methods
-		  router.route().handler(BodyHandler.create());
-
-		  // Register your custom handlers
-		  RegisterRoutes();
-			...}
-			private void RegisterRoutes()
-			{
-		  	ShoppingListFinder mng = new ShoppingListFinder(vertx, router);
-			}
+		HttpServer server = vertx.createHttpServer();
+		
+		/* Se crea instancia de Router para el manejo de peticiones */
+		router = Router.router(vertx);
+		
+		String PACKAGE = "examples.simpleRestService.restServices";
+		
+		/* scan the package search service class */
+		RestVertx.initScan(vertx, router, jwt, PACKAGE);
+		
+}
 ```
 
-4.Make sure you set compiler to remember parameter values for your project
+3.Make sure you set compiler to remember parameter values for your project
 
 That's it, you're done.  Just enough time left to make another espresso ;)
 
@@ -287,10 +289,9 @@ example: @Path("name/:id")
 
 <span style="color:rgb(21, 186, 1)">@Method</span><br/>
 Optional<br/>
-example: @Method("Get")
+example: @GET
 
 - If you don't set the method, we will attempt to determine if the name of the handling method is or contains an http method name and set the http method registered for the route to that name
-- Defaults to Get
 
 <span style="color:rgb(21, 186, 1)">@Base </span> (<b>Class Annotation</b>)<br/>
 Optional<br/>
@@ -300,7 +301,7 @@ example: @Base("api/monkeys")
 
 <span style="color:rgb(21, 186, 1)">@ResultType</span><br/>
 Optional<br/>
-example: @ResultType("json")
+example: @Produces("json")
 
 - Sets the return type, which affects the header info as well
 - <b>Don't specify a result type unless it's JSON or a file</b>
@@ -335,47 +336,10 @@ Times should only be compared relative to one another to give a very rough estim
 
 While one test ran, the other @test annotation AND the other route were commented out in TimeTest.java (included under testing source code)
 
-v 0.0.6
+V 1.0
 
-RestVertx + Vert.x
+CarmenRestVertx + Vert.x
 
-Time taken = 105761 ms
-Time taken (nano) = 105761359928
-
-Vert.x alone
-
-Time taken Vert.x alone = 96890 ms
-Time taken (nano) Vert.x alone = 96890834528
-
-Observations
-- v0.0.6 RestVertx on top of Vertx is 9.155% slower than Vertx alone
-- v0.0.5 RestVertx 11.5% slower
-- Two percent difference isn't alot
-
-v 0.0.5
-
-RestVertx + Vert.x
-
-	Time taken = 39835 ms
-	Time taken (nano) = 39835314664
-
-Vert.x alone
-
-	Time taken Vert.x alone = 35721 ms
-	Time taken (nano) Vert.x alone = 35721488940
-
-
-<a name=Tests />
-## Tests
-We are trying to include more tests with our releases.  If you have tests to add or found bugs, we would like to add tests for those.  Submit a pull request if possible.  All tests written are passing as of 2/14/16
-
-## Important Disclaimers
-
-As of 2/14/16 v0.0.6, this is not production ready and may have bugs lurking underneath.
-
-Testing & documentation is more important than benchmarks for this project, please include tests with any pull requests you make [here](https://github.com/codesipcoffee/restvertx/issues)
-
-Any comments/questions, see the <a href='https://groups.google.com/forum/#!forum/restvertx' target="_blank">RestVertx Google Group</a>
 
 Please submit any issues you find
 
