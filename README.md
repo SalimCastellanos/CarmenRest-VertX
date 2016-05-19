@@ -203,9 +203,9 @@ Add this to your repositories:
 
 ```xml
 <repository>
-    <id>git-codesipcoffee</id>
-    <name>CodeSipCoffee's Git based repo</name>
-    <url>https://raw.github.com/codesipcoffee/RestVertx/releases</url>
+    <id>git-SalimCastellanos</id>
+    <name>CarmenRestVertx Git based repo</name>
+    <url>https://github.com/SalimCastellanos/CarmenRest-VertX/releases</url>
 </repository>
 ```
 
@@ -213,9 +213,9 @@ Add this in your dependencies:
 
 ```xml
 <dependency>
-	<groupId>code.sip.coffee</groupId>
-	<artifactId>restvertx</artifactId>
-	<version>0.0.6</version>
+	<groupId>co.com.quipux</groupId>
+	<artifactId>carmenRest</artifactId>
+	<version>1.0</version>
 </dependency>
 ```
 

@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<name>RestVertx</name>
-	<url>https://github.com/codesipcoffee/restvertx</url>
+	<url>https://github.com/SalimCastellanos/CarmenRest-VertX</url>
 
-	<groupId>code.sip.coffee</groupId>
-	<artifactId>restvertx</artifactId>
-	<version>0.0.6</version>
+	<groupId>co.com.quipux</groupId>
+	<artifactId>CarmenRestVertx</artifactId>
+	<version>1.0</version>
 	<packaging>jar</packaging>
 
 	<repositories>
