@@ -1,6 +1,6 @@
 # CarmenRestVertx
 
-CarmenRestVertx is written in Java and based on RestVertx 0.0.6
+CarmenRestVertx is written in Java and based on RestVertx 0.0.6 but with JAX-RS standart and security
 
 view example in src/examples/
 
@@ -11,7 +11,6 @@ CarmenRest-Vertx is a mini-framework that makes it easier to build HTTP services
 [Main Features](#Main-Features)<br/>
 [Getting Started](#Getting-Started)<br/>
 [Annotations](#Annotations)<br/>
-[Tests](#Tests)<br/>
 
 <a name="Main-Features"/>
 ### Main Features
