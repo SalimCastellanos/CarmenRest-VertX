@@ -55,6 +55,9 @@ public class ShoppingList extends AvalibleService{
 	@Path("saveProduct")
 	public RestResponse saveProducto(ProductDTO poductDTO) {
 	
+		manager.saveProduct(poductDTO);
+		return new RestResponse(Json.encode(new ProductDTO()), 200, "");
+	
 		/* example json param product:
 		
 			{
@@ -86,8 +89,6 @@ public class ShoppingList extends AvalibleService{
 		
 		*/
 		
-		manager.saveProduct(poductDTO);
-		return new RestResponse(Json.encode(new ProductDTO()), 200, "");
 	
 	}
 	
