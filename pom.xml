@@ -12,7 +12,7 @@
 
 	<repositories>
 		<repository>
-			<id>git-carmenrestvertx</id>
+			<id>git-SalimCastellanos</id>
 			<name>RestVertx Repository</name>
 			<url>https://raw.github.com/SalimCastellanos/CarmenRest-VertX/releases</url>
 		</repository>
