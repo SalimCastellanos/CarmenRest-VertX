@@ -10,7 +10,7 @@ import rest.vertx.Annotations.RolesAllowed;
 import rest.vertx.models.RestResponse;
 
 @Base("product")
-public class productService extends AvalibleService{
+public class productService extends AvalibleService {
 
 	@GET
 	@RolesAllowed({"defcon1","defcon2"})

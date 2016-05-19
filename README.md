@@ -26,9 +26,9 @@ public class ShoppingList extends AvalibleService {
 
 	@GET
 	@Produces("json")
-	@Path("getProducto")
+	@Path("getProduct")
 	@RolesAllowed({"admin","user"})
-	public RestResponse getProducto() {
+	public RestResponse getProduct() {
 	
 		return new RestResponse("response:ok", 200, "");
 	
@@ -138,8 +138,6 @@ var request = {
 	}
 }
 ```
-
-More examples can be found in the testing source files of the main branch (newer example) as well as in the example branch (older example)
 
 ##### Feature #3: Enable CORS
 Great for cross-IDE development.  Are you transferring your web application code from one IDE to another because you prefer one for web development and the other for your Vertx endpoints?  Do you want to serve files with node in one IDE while running your Vertx service endpoints in Eclipse on a different port?
