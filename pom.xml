@@ -7,7 +7,7 @@
 
 	<groupId>co.com.quipux</groupId>
 	<artifactId>CarmenRestVertx</artifactId>
-	<version>1.0</version>
+	<version>1.0.1</version>
 	<packaging>jar</packaging>
 
 	<repositories>
