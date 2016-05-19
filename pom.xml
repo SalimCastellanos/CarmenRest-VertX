@@ -12,9 +12,9 @@
 
 	<repositories>
 		<repository>
-			<id>git-codesipcoffee</id>
+			<id>git-carmenrestvertx</id>
 			<name>RestVertx Repository</name>
-			<url>https://raw.github.com/codesipcoffee/restvertx/releases</url>
+			<url>https://raw.github.com/SalimCastellanos/CarmenRest-VertX/releases</url>
 		</repository>
 	</repositories>
 
